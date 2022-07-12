@@ -1,5 +1,7 @@
 .App {
-  text-align: center;
+  text-align: start;
+  margin: 1rem 1rem;
+  
 }
 
 .App-logo {
@@ -35,4 +37,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.is--completed button{
+  background-color: green;
 }
