@@ -9,12 +9,16 @@ export default function App() {
     items: []
   });
 
-  /**lOGICA ADD TODOINPUT */
 
 
-  /*questa calbback
-   aggiorna lo stato del parent
-   e fa handler finale  evento onChange da input  */
+
+  /*questa calbback è superflua quindi intenzionalmente creata 
+  per separare i commenti che ho voluto inserire 
+  dalla calback che passiamo al Child
+ ****************
+  aggiorna lo stato del parent
+  e fa handler finale  evento onChange da input 
+  */
   const insertInput_updateState = (prevState, e) => {
     // NO e.preventDefault() 
     /**
@@ -23,12 +27,12 @@ export default function App() {
      * e che sotto l azione del submit invia all action che punta
      * 
      * quindi per l input non ce il comportamento predefinito del submit
-     * ci serve solo leggere il valore
+     * ci serve solo accedere al valore per poterlo memorizzare nello stato
      */
 
     return {
       ...prevState,//estraplo le  prop di state quindi attraverso le etichette nell oggetto di stato ho il puntatore
-      //per agire in overriding nella prop interessata
+                    //per agire in overriding nella prop interessata
 
       value: e.target.value//ho il puntatore  value e gli assegno il valore della prop event.target.value 
       //dell oggetto event risale in eventBubbling
@@ -40,16 +44,15 @@ export default function App() {
 
 
 
-  //calback che passiamo al child nella prop changed invocata sull onChange dell input  dentro il form del Child todoList
+  //calback che passiamo al child nella prop changed invocata sull onChange dell input  dentro il form del Child todoInput
   const inputChanged = event => { // *** 2.0 *** 
     setAppState(insertInput_updateState(appState, event))
-
   };
 
 
 
 
-  /*cambiamo il backgorund all attivita che riteniamo conclusa */
+  /*cambiamo il backgorund al button  delll attivita che riteniamo conclusa */
   const toggleCompleted = index => {
 
     setAppState((prevState) => {
@@ -62,9 +65,9 @@ export default function App() {
          * 
          */
         items: [...prevState.items.map((item, idx) => {
-          return idx === index ? { //se uguale  
-                          ...item, //spreddo item
-                          completed: true //posso raggiungere 'completed', assegno valore true a completed
+          return idx === index ? {               //se uguale  
+                          ...item,               //spreddo item
+                          completed: true        //posso raggiungere 'completed', assegno valore true a completed
                           } 
                           : 
                           {
@@ -99,7 +102,7 @@ export default function App() {
 
 
   /** *** 2.1 ***
-   * il child todoInput riceve anche la callBack addToTodo passata al gestore di eventi onSubmit
+   * il child todoInput riceve la callBack addToTodo passata come gestore di evento dell onSubmit
    */
   const addToTodo = e => {
 
@@ -119,7 +122,7 @@ export default function App() {
       return {
         ...prevState,
         items: [...prevState.items, {
-          id: e.timeStamp,//nell oggetto event abbiamo la prop timeStamp che utilizziamo come id univoco
+          id: e.timeStamp,      //nell oggetto event abbiamo la prop timeStamp che utilizziamo come id univoco
           title: appState.value,
           completed: false
         }
@@ -142,7 +145,7 @@ export default function App() {
        * anche il child todoList dipende dallo stato 
        * nel renderizzarsi
        *  nella prop  items che riceve la prop items di appState
-       * nelle prop che ricevono le callback per lo stato del parent App
+       * nelle prop che ricevono le callback come handler
       */}
       {appState.items.length > 0 && (
         <TodoList
