@@ -64,6 +64,12 @@ export default function App() {
          * utilizo il metodo map sull array di stato 
          * 
          */
+        /*
+        i metodi map ,filter ,spred sono metodi SHALLOW ovvero cambiano solo il valore del riferimento dentro 
+        il puntatore root (nome oggetto , nome array )
+        all array o all oggetto quindi per raggiungere item dobbiamo ulteriormente spredare item se dobbiamo accedere
+        ad un altro livello di annidamento 
+        */
         items: [...prevState.items.map((item, idx) => {
           return idx === index ? {               //se uguale  
                           ...item,               //spreddo item
