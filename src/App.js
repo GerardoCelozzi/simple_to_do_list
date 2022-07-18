@@ -52,37 +52,32 @@ export default function App() {
 
 
 
-  /*cambiamo il backgorund al button  delll attivita che riteniamo conclusa */
+  
+
+  /*cambiamo il backgorund all attivita che riteniamo conclusa */
   const toggleCompleted = index => {
 
     setAppState((prevState) => {
       return {
-        ...prevState,
+        ...prevState,//shallow copy
         /**
          * mi spredo l array per avere disponibili gli elementi di items
          * avendo bisogno di ritornare tutto l array e di cambiare lo stato sull elemento che corrisponde a index
          * utilizo il metodo map sull array di stato 
          * 
          */
-        /*
-        i metodi map ,filter ,spred sono metodi SHALLOW ovvero cambiano solo il valore del riferimento dentro 
-        il puntatore root (nome oggetto , nome array )
-        all array o all oggetto quindi per raggiungere item dobbiamo ulteriormente spredare item se dobbiamo accedere
-        ad un altro livello di annidamento 
-        */
-        items: [...prevState.items.map((item, idx) => {
-          return idx === index ? {               //se uguale  
-                          ...item,               //spreddo item
-                          completed: true        //posso raggiungere 'completed', assegno valore true a completed
+         items: prevState.items.map((item, idx) => {
+          return idx === index ? { 
+                          ...item,//shallow copy su oggetto item
+                          completed : true //riferimento dato , dato primitivo'completed',non modifico valori ai riferimenti, assegno valore true a completed
                           } 
                           : 
                           {
                              ...item //altrimenti ritorno item come è
                           }
 
-        })]
-        //faccio lo spred di cio che ritorna map perche devo ritonare le prop dell array di stato di partenza
-        //che ho aggiornato nel map e non il riferimento al nuovo array aggiornato
+        })
+       //il map ritorna nuovo array nuovo riferimento con valori copiati dall array di partenza con copia shallow
       }
     })
   };
@@ -101,14 +96,14 @@ export default function App() {
     setAppState((prevState) => {
       return {
         ...prevState,
-        items: [...prevState.items.filter(item => item.completed === false)]
+        items:prevState.items.filter(item => item.completed === false)
       }
     })
   };
 
 
   /** *** 2.1 ***
-   * il child todoInput riceve la callBack addToTodo passata come gestore di evento dell onSubmit
+   * il child todoInput riceve anche la callBack addToTodo passata al gestore di eventi onSubmit
    */
   const addToTodo = e => {
 
@@ -125,10 +120,11 @@ export default function App() {
 
     setAppState((prevState) => {
       /**aggiorniamo direttamente qui senza alcuna callBack come r 18 */
-      return {
+      return {//creo un nuovo riferimento 
         ...prevState,
-        items: [...prevState.items, {
-          id: e.timeStamp,      //nell oggetto event abbiamo la prop timeStamp che utilizziamo come id univoco
+        items: [...prevState.items,//copiamo i riferimenti gia inseriti quindi vecchi valori mantenuti  
+          {//add nuovo riferimento oggetto item
+          id: e.timeStamp,//nell oggetto event abbiamo la prop timeStamp che utilizziamo come id univoco
           title: appState.value,
           completed: false
         }
